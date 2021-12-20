@@ -110,6 +110,15 @@ scene.add(camera)
 // Controls
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
+controls.enableZoom = false
+
+//  Horizontal Scroll
+controls.minAzimuthAngle = 0
+controls.maxAzimuthAngle = Math.PI / 2
+
+//  Vertical Scroll
+controls.minPolarAngle = Math.PI / 4
+controls.maxPolarAngle = Math.PI / 2
 
 /**
  * Renderer
