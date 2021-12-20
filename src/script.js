@@ -55,19 +55,67 @@ scene.add(cube)
 //	Baked materials
 const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture})
 
+//  Three materials
+
+//  TODO: Find the correct colors
+const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+const lavaMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00})
+const chestBandMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+const flagMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
+const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+
 /**
  * Scene
  */
+
+//  Scene constants
+const leafMaterialNames = [
+    "Leaves_right",
+    "Leaves_left",
+    "Leaves_second_left",
+    "Leaves_second_right",
+    "Leaves_middle"
+]
+const lightMaterialNames = [
+    "Light_left",
+    "Light_right"
+]
+//  Yes I know I was dumb in blender and cannot type
+const skullMaterialNames = [
+    "Skull_left",
+    "Skulll_second_left",
+    "Skull_second_right",
+    "skull_right"
+]
+
 let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
 	'mainScene.glb',
 	(gltf) => {
 		gltf.scene.traverse((child) => {
-			child.material = bakedMaterial
+            if(leafMaterialNames.includes(child.name)) {
+                child.material = leafMaterial
+            } else if(child.name == "Lava") {
+                child.material = lavaMaterial
+            } else if(lightMaterialNames.includes(child.name)) {
+                child.material = lightMaterial
+            } else if(child.name == "Chest_Band") {
+                child.material = chestBandMaterial
+            } else if(skullMaterialNames.includes(child.name)) {
+                child.material = skullMaterial
+            } else if(child.name == "Flag") {
+                child.material = flagMaterial
+            } else {
+			    child.material = bakedMaterial
+            }
 			child.position.set(child.position.x - 7.5, child.position.y - 7.5, child.position.z - 7.5)
 		})
 		scene.add(gltf.scene)
-		islandScene = scene.children[2]
+		islandScene = scene.children[2].children
+        islandScene.forEach((child) => {
+            console.log(child.name)
+        })
 	}
 )
 
