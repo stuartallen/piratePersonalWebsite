@@ -58,7 +58,7 @@ const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture})
 /**
  * Scene
  */
-const islandScene = []	//	Not defined outside of calls before this function
+let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
 	'mainScene.glb',
 	(gltf) => {
@@ -118,6 +118,7 @@ scene.add(camera)
 const controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.enableZoom = false
+controls.enablePan = false
 
 //  Horizontal Scroll
 controls.minAzimuthAngle = 0
