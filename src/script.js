@@ -92,6 +92,11 @@ window.addEventListener('resize', () =>
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+    //  Update zoom
+    window.innerHeight > window.innerWidth ? 
+    camera.position.multiplyScalar(7) : 
+    camera.position.multiplyScalar(3)
 })
 
 /**
@@ -103,7 +108,9 @@ camera.position.x = 4
 camera.position.y = 2
 camera.position.z = 4
 
-camera.position.multiplyScalar(3)
+window.innerHeight > window.innerWidth ? 
+    camera.position.multiplyScalar(7) : 
+    camera.position.multiplyScalar(3)
 
 scene.add(camera)
 
