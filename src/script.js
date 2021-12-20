@@ -102,6 +102,9 @@ const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 
 camera.position.x = 4
 camera.position.y = 2
 camera.position.z = 4
+
+camera.position.multiplyScalar(3)
+
 scene.add(camera)
 
 // Controls
