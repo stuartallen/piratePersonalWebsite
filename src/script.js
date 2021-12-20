@@ -69,6 +69,13 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
  * Scene
  */
 
+const plane = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(100, 100, 100, 100),
+    new THREE.MeshBasicMaterial({ color: 0x0000ff })
+)
+plane.rotation.set(-Math.PI / 2, 0, 0)
+scene.add(plane)
+
 //  Scene constants
 const leafMaterialNames = [
     "Leaves_right",
@@ -113,9 +120,9 @@ gltfLoader.load(
 		})
 		scene.add(gltf.scene)
 		islandScene = scene.children[2].children
-        islandScene.forEach((child) => {
-            console.log(child.name)
-        })
+        // islandScene.forEach((child) => {
+        //     console.log(child.name)
+        // })
 	}
 )
 
@@ -174,7 +181,7 @@ controls.maxAzimuthAngle = Math.PI / 2
 
 //  Vertical Scroll
 controls.minPolarAngle = Math.PI / 4
-controls.maxPolarAngle = Math.PI / 2
+controls.maxPolarAngle = Math.PI / 2 - 0.1
 
 /**
  * Renderer
