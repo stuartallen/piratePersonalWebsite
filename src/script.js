@@ -25,6 +25,9 @@ const scene = new THREE.Scene()
 // Texture loader
 const textureLoader = new THREE.TextureLoader()
 
+//  Textures
+const nightSkyTexture = textureLoader.load("nightSky.jpg")
+
 // Draco loader
 const dracoLoader = new DRACOLoader()
 dracoLoader.setDecoderPath('draco/')
@@ -69,12 +72,15 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
  * Scene
  */
 
-const plane = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(100, 100, 100, 100),
+scene.background = nightSkyTexture
+
+const sea = new THREE.Mesh(
+    new THREE.CircleBufferGeometry(50, 50),
     new THREE.MeshBasicMaterial({ color: 0x0000ff })
 )
-plane.rotation.set(-Math.PI / 2, 0, 0)
-scene.add(plane)
+
+sea.rotation.set(-Math.PI / 2, 0, 0)
+scene.add(sea)
 
 //  Scene constants
 const leafMaterialNames = [
@@ -126,6 +132,8 @@ gltfLoader.load(
 	}
 )
 
+scene.fog = new THREE.Fog(0x000000, 40, 50)
+
 /**
  * Sizes
  */
@@ -148,10 +156,7 @@ window.addEventListener('resize', () =>
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
-    //  Update zoom
-    window.innerHeight > window.innerWidth ? 
-    camera.position.multiplyScalar(7) : 
-    camera.position.multiplyScalar(3)
+    //  TODO: Update zoom
 })
 
 /**
