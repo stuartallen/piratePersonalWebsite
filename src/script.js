@@ -69,6 +69,16 @@ const flagMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.
 const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 
 /**
+ * Labels/Points of interests
+ */
+ const points = [
+    {
+        position: new THREE.Vector3(0,0,0),
+        element: document.querySelector(".treasurePoint")
+    }
+]
+
+/**
  * Scene
  */
 
@@ -102,11 +112,25 @@ const skullMaterialNames = [
     "skull_right"
 ]
 
+const labelPointNames = [
+    "treasureIconEmpty"
+]
+
+const globalOffset = {
+    'x': -7.5,
+    'y': -7.5,
+    'z': -7.5
+}
+
 let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
 	'newMainScene.glb',
 	(gltf) => {
 		gltf.scene.traverse((child) => {
+			child.position.set(child.position.x + globalOffset.x, 
+                child.position.y + globalOffset.y, 
+                child.position.z + globalOffset.z)
+
             if(leafMaterialNames.includes(child.name)) {
                 child.material = leafMaterial
             } else if(child.name == "Lava") {
@@ -115,6 +139,8 @@ gltfLoader.load(
                 child.material = lightMaterial
             } else if(child.name == "Chest_Band") {
                 child.material = chestBandMaterial
+                console.log("band")
+                console.log(child.position)
             } else if(skullMaterialNames.includes(child.name)) {
                 child.material = skullMaterial
             } else if(child.name == "Flag") {
@@ -122,13 +148,19 @@ gltfLoader.load(
             } else {
 			    child.material = bakedMaterial
             }
-			child.position.set(child.position.x - 7.5, child.position.y - 7.5, child.position.z - 7.5)
+            
+            //  HTML Points
+            if(labelPointNames.includes(child.name)) {
+                points[labelPointNames.indexOf(child.name)].position = child.position
+                console.log("point")
+                console.log(child.position)
+            }
 		})
 		scene.add(gltf.scene)
 		islandScene = scene.children[3].children
-        islandScene.forEach((child) => {
-            console.log(child.name)
-        })
+        // islandScene.forEach((child) => {
+        //     console.log(child.name)
+        // })
 	}
 )
 
@@ -210,6 +242,21 @@ const tick = () =>
 
     // Update controls
     controls.update()
+
+    //  Update HTML points
+    for(const point of points) {
+        const screenPosition = point.position.clone()
+        //  Idk why this needs to be offset but it works
+        //  TODO: Find out why this works
+        screenPosition.set(screenPosition.x  + globalOffset.x, 
+            screenPosition.y + globalOffset.y, 
+            screenPosition.z + globalOffset.z)
+        screenPosition.project(camera)
+
+        const translateX = screenPosition.x * sizes.width * 0.5
+        const translateY = - screenPosition.y * sizes.height * 0.5
+        point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
+    }
 
     // Render
     renderer.render(scene, camera)
