@@ -31,7 +31,7 @@ body
     top: -50px;
     left: -50px;
     border-radius: 50%;
-    background: #0000ff77;
+    background: #00ffff;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -40,10 +40,16 @@ body
     font-size: large;
     transform: scale(0,0);
     transition: transform 0.3s;
+    opacity: 0.5;
+    transition: opacity 0.3s;
 }
 
 .point.visible .label {
     transform: scale(1,1);
+}
+
+.point:hover .label{
+    opacity: 0.8;
 }
 
 .point .text {

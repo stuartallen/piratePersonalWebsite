@@ -75,6 +75,18 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
     {
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".treasurePoint")
+    },
+    {
+        position: new THREE.Vector3(0,0,0),
+        element: document.querySelector(".skullPoint")
+    },
+    {
+        position: new THREE.Vector3(0,0,0),
+        element: document.querySelector(".wheelPoint")
+    },
+    {
+        position: new THREE.Vector3(0,0,0),
+        element: document.querySelector(".flagPoint")
     }
 ]
 
@@ -113,7 +125,10 @@ const skullMaterialNames = [
 ]
 
 const labelPointNames = [
-    "treasureIconEmpty"
+    "treasureIconEmpty",
+    "skullIconEmpty",
+    "wheelIconEmpty",
+    "flagIconEmpty"
 ]
 
 const globalOffset = {
