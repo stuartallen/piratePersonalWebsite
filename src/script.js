@@ -104,7 +104,7 @@ const skullMaterialNames = [
 
 let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
-	'mainScene.glb',
+	'newMainScene.glb',
 	(gltf) => {
 		gltf.scene.traverse((child) => {
             if(leafMaterialNames.includes(child.name)) {
@@ -125,10 +125,10 @@ gltfLoader.load(
 			child.position.set(child.position.x - 7.5, child.position.y - 7.5, child.position.z - 7.5)
 		})
 		scene.add(gltf.scene)
-		islandScene = scene.children[2].children
-        // islandScene.forEach((child) => {
-        //     console.log(child.name)
-        // })
+		islandScene = scene.children[3].children
+        islandScene.forEach((child) => {
+            console.log(child.name)
+        })
 	}
 )
 
