@@ -210,16 +210,10 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const ogCameraPosition = {
-    'x':4,
-    'y':2,
-    'z':4
-}
+const ogCameraPosition = new THREE.Vector3(4, 2, 4)
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = ogCameraPosition.x
-camera.position.y = ogCameraPosition.y
-camera.position.z = ogCameraPosition.z
+camera.position.set(ogCameraPosition.x, ogCameraPosition.y, ogCameraPosition.z)
 
 window.innerHeight > window.innerWidth ? 
     camera.position.multiplyScalar(7) : 
