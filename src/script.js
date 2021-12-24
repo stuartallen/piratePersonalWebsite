@@ -90,6 +90,30 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
     }
 ]
 
+const cameraAnimationObject = {
+    startTime: -1,
+    transitionTime: 2,
+    lastPoint: new THREE.Vector3(0,0,0),
+    currentPoint: new THREE.Vector3(0,0,0),
+    transitioning: false,
+    t: 0
+}
+
+const setOnClickMethods = () => {
+    for(let point of points) {
+        point.element.addEventListener("click", (e) => {
+            console.log("clicked")
+            cameraAnimationObject.lastPoint = ogCameraPosition
+            cameraAnimationObject.currentPoint = point.position
+            cameraAnimationObject.transitioning = true
+            cameraAnimationObject.t = 0
+            console.log("finished click function")
+        })
+    }
+}
+
+
+
 /**
  * Scene
  */
@@ -173,6 +197,7 @@ gltfLoader.load(
 		})
 		scene.add(gltf.scene)
 		islandScene = scene.children[3].children
+        setOnClickMethods()
         // islandScene.forEach((child) => {
         //     console.log(child.name)
         // })
@@ -254,6 +279,23 @@ const clock = new THREE.Clock()
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
+
+    //  Update camera if necessary
+    if(cameraAnimationObject.transitioning) {
+        cameraAnimationObject.startTime = cameraAnimationObject.startTime == -1 ? elapsedTime : cameraAnimationObject.startTime
+        cameraAnimationObject.t = (elapsedTime - cameraAnimationObject.startTime) / cameraAnimationObject.transitionTime
+        let newPos = new THREE.Vector3();
+        if(cameraAnimationObject.t < 1) {
+            newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(1 - cameraAnimationObject.t), 
+                        ogCameraPosition.clone().multiplyScalar(cameraAnimationObject.t))
+        } else {
+            cameraAnimationObject.transitioning = false
+            cameraAnimationObject.startTime = -1
+            newPos = ogCameraPosition
+            cameraAnimationObject.lastPoint = ogCameraPosition
+        }
+        camera.position.set(newPos.x, newPos.y, newPos.z)
+    }
 
     // Update controls
     controls.update()
