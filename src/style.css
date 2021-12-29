@@ -2,6 +2,7 @@
 {
     margin: 0;
     padding: 0;
+    -webkit-user-select: none;
 }
 
 html,
@@ -22,6 +23,7 @@ body
     position: absolute;
     top: 50%;
     left: 50%;
+    cursor: pointer;
 }
 
 .point .label {
@@ -54,4 +56,48 @@ body
 
 .point .text {
     display: none;
+}
+
+.appear {
+    position: absolute;
+    background-color: #00ffff;
+    color: white;
+    opacity: 0.5;
+    transform: opacity 0.3s;
+    padding: 1%;
+    border-radius: 20%;
+}
+
+#backButton:hover {
+    opacity: 0.8;
+}
+
+#backButton {
+    left: 2%;
+    top: 2%;
+    cursor: pointer;
+}
+
+#content {
+    left: 2%;
+    right: 2%;
+    bottom: 2%;
+    height: 20%;
+    overflow: scroll;
+    opacity: 0.9;
+    border-radius: 10px;
+}
+
+*::-webkit-scrollbar {
+    padding: 4%;
+}
+
+*::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: gray;
+    border-radius: 3px;
+    opacity: 0.4;
 }

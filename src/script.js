@@ -317,17 +317,11 @@ const tick = () =>
         }
         camera.position.set(newPos.x, newPos.y, newPos.z)
         camera.lookAt(lookAtPos)
-        console.log(camera.position)
     }
 
     //  Update HTML points
     for(const point of points) {
         const screenPosition = point.position.clone()
-        // //  Idk why this needs to be offset but it works
-        // //  TODO: Find out why this works
-        // screenPosition.set(screenPosition.x  + globalOffset.x, 
-        //     screenPosition.y + globalOffset.y, 
-        //     screenPosition.z + globalOffset.z)
         screenPosition.project(camera)
 
         const translateX = screenPosition.x * sizes.width * 0.5
