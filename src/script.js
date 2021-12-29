@@ -167,10 +167,17 @@ let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
 	'newMainScene.glb',
 	(gltf) => {
+        //  Changing this does not change each child's position
         gltf.scene.position.set(gltf.scene.position.x + globalOffset.x,
                                 gltf.scene.position.y + globalOffset.y,
                                 gltf.scene.position.z + globalOffset.z)
+        console.log(gltf.scene.position)
 		gltf.scene.traverse((child) => {
+            // child.position.set(
+            //     child.position.x + globalOffset.x,
+            //     child.position.y + globalOffset.y,
+            //     child.position.z + globalOffset.z
+            // )
             
 
             if(leafMaterialNames.includes(child.name)) {
@@ -191,9 +198,7 @@ gltfLoader.load(
 
             //  HTML Points
             if(labelPointNames.includes(child.name)) {
-                points[labelPointNames.indexOf(child.name)].position = child.position
-                // console.log("point")
-                // console.log(child.position)
+                points[labelPointNames.indexOf(child.name)].position = child.position.clone().add(globalOffset)
             }
 		})
 		scene.add(gltf.scene)
@@ -264,7 +269,6 @@ var elapsedTime = 0
 
 const tick = () =>
 {
-    const delta = clock.getElapsedTime() - elapsedTime
     elapsedTime = clock.getElapsedTime()
 
     //  Update camera if necessary
@@ -291,11 +295,11 @@ const tick = () =>
     //  Update HTML points
     for(const point of points) {
         const screenPosition = point.position.clone()
-        //  Idk why this needs to be offset but it works
-        //  TODO: Find out why this works
-        screenPosition.set(screenPosition.x  + globalOffset.x, 
-            screenPosition.y + globalOffset.y, 
-            screenPosition.z + globalOffset.z)
+        // //  Idk why this needs to be offset but it works
+        // //  TODO: Find out why this works
+        // screenPosition.set(screenPosition.x  + globalOffset.x, 
+        //     screenPosition.y + globalOffset.y, 
+        //     screenPosition.z + globalOffset.z)
         screenPosition.project(camera)
 
         const translateX = screenPosition.x * sizes.width * 0.5
