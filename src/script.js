@@ -3,6 +3,7 @@ import * as dat from 'lil-gui'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
+import { gsap } from 'gsap'
 
 /**
  * Base
@@ -21,18 +22,34 @@ const scene = new THREE.Scene()
 /**
  * Loaders
  */
+//  Loading manager
+const loadingBar = document.querySelector('.loading-bar')
+
+const loadingManager = new THREE.LoadingManager(
+    //  Loaded
+    () => {
+        loadingBar.classList.add('finished')
+        gsap.to(overlayMaterial.uniforms.uAlpha, {duration: 3, value: 0})
+    },
+    //  Progress
+    (itemsUrl, itemsLoaded, itemsTotal) => {
+        console.log(itemsLoaded/itemsTotal)
+        loadingBar.style.transform = `scaleX(${itemsLoaded/itemsTotal})`
+    }
+)
+
 // Texture loader
-const textureLoader = new THREE.TextureLoader()
+const textureLoader = new THREE.TextureLoader(loadingManager)
 
 //  Textures
 const nightSkyTexture = textureLoader.load("nightSky.jpg")
 
 // Draco loader
-const dracoLoader = new DRACOLoader()
+const dracoLoader = new DRACOLoader(loadingManager)
 dracoLoader.setDecoderPath('draco/')
 
 // GLTF loader
-const gltfLoader = new GLTFLoader()
+const gltfLoader = new GLTFLoader(loadingManager)
 gltfLoader.setDRACOLoader(dracoLoader)
 
 //	Textures
@@ -162,6 +179,29 @@ const setOnClickMethods = () => {
 /**
  * Scene
  */
+
+//  Loading Overlay
+const overlayGeometry = new THREE.PlaneBufferGeometry(2,2,1,1)
+const overlayMaterial = new THREE.ShaderMaterial({
+    transparent: true,
+    uniforms: {
+        uAlpha: { value: 1 }
+    },
+    vertexShader:`
+        void main() {
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+    fragmentShader:`
+        uniform float uAlpha;
+
+        void main() {
+            gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
+        }
+    `
+})
+const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
+scene.add(overlay)
 
 scene.background = nightSkyTexture
 
