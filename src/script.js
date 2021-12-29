@@ -75,25 +75,38 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".treasurePoint"),
         focus: new THREE.Vector3(0,0,0),
-        cameraPostition: new THREE.Vector3(0,0,0)
+        cameraPostition: new THREE.Vector3(0,0,0),
+        //  Yes I actually do want to use innerHTML here, the user cant enter anything
+        setContent: () => {
+            document.getElementById('content').innerHTML = '<h1>Treasure content</h1><p>Blah blah</p>'
+        }
     },
     {
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".skullPoint"),
         focus: new THREE.Vector3(0,0,0),
-        cameraPostition: new THREE.Vector3(0,0,0)
+        cameraPostition: new THREE.Vector3(0,0,0),
+        setContent: () => {
+            document.getElementById('content').innerHTML = '<h1>Ahoy content</h1><p>Blah blah</p>'
+        }
     },
     {
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".wheelPoint"),
         focus: new THREE.Vector3(0,0,0),
-        cameraPostition: new THREE.Vector3(0,0,0)
+        cameraPostition: new THREE.Vector3(0,0,0),
+        setContent: () => {
+            document.getElementById('content').innerHTML = '<h1>Heading content</h1><p>Blah blah</p>'
+        }
     },
     {
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".flagPoint"),
         focus: new THREE.Vector3(0,0,0),
-        cameraPostition: new THREE.Vector3(0,0,0)
+        cameraPostition: new THREE.Vector3(0,0,0),
+        setContent: () => {
+            document.getElementById('content').innerHTML = '<h1>Voyages content</h1><p>Blah blah</p>'
+        }
     }
 ]
 
@@ -136,6 +149,7 @@ const setOnClickMethods = () => {
             cameraAnimationObject.lastFocus = cameraAnimationObject.focus
             cameraAnimationObject.focus = point.focus
             cameraAnimationObject.zoomed = true
+            point.setContent()
             for(let point of points) {
                 point.element.classList.remove("visible")
             }
