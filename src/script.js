@@ -95,7 +95,11 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         cameraPostition: new THREE.Vector3(0,0,0),
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
-            document.getElementById('content').innerHTML = "<h1>Treasure</h1><p>Stuart has picked up many skills on his journeys! " + 
+            document.getElementById('content').innerHTML = "<h1>Plunder</h1><p>" +
+            "Some of Stuart's projects include" +
+            "<ul><li>This website made with threejs</li>" + 
+            "<li>A Drum Machine Website Made in vanilla javascript</li></ul>" +
+            "Stuart has picked up many skills on his journeys! " + 
             "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some other known technologies are Nodejs, Reactjs, " +
             "MongoDB, Mongoosejs, and Threejs. His relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
             " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
@@ -147,7 +151,7 @@ const initialFocus = new THREE.Vector3(-5, 3 , 0)
 
 const cameraAnimationObject = {
     startTime: -1,
-    transitionTime: 2,
+    transitionTime: 1,
     lastPoint: new THREE.Vector3(0,0,0),
     currentPoint: new THREE.Vector3(0,0,0),
     transitioning: false,
@@ -165,9 +169,7 @@ document.getElementById("backButton").addEventListener("click", (e) => {
     cameraAnimationObject.lastFocus = cameraAnimationObject.focus
     cameraAnimationObject.focus = initialFocus
     cameraAnimationObject.currentPoint = ogCameraPosition
-    for(let point of points) {
-        point.element.classList.add('visible')
-    }
+    cameraAnimationObject.zoomed = false
     document.getElementById("backButton").classList.remove("visible")
     document.getElementById("content").classList.remove("visible")
     document.getElementById("title").classList.remove("hide")
@@ -187,9 +189,6 @@ const setOnClickMethods = () => {
             for(let point of points) {
                 point.element.classList.remove("visible")
             }
-            document.getElementById("title").classList.add("hide")
-            document.getElementById("backButton").classList.add("visible")
-            document.getElementById("content").classList.add("visible")
         })
     }
 }
@@ -423,6 +422,15 @@ const tick = () =>
             newPos = cameraAnimationObject.currentPoint
             cameraAnimationObject.lastPoint = ogCameraPosition
             lookAtPos = cameraAnimationObject.focus
+            if(cameraAnimationObject.zoomed) {
+                document.getElementById("title").classList.add("hide")
+                document.getElementById("backButton").classList.add("visible")
+                document.getElementById("content").classList.add("visible")
+            } else {
+                for(let point of points) {
+                    point.element.classList.add('visible')
+                }
+            }
         }
         camera.position.set(newPos.x, newPos.y, newPos.z)
         camera.lookAt(lookAtPos)

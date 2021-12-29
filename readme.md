@@ -1,16 +1,5 @@
-# Three.js Journey
+#   Pirate Portfolio Website
 
-## Setup
-Download [Node.js](https://nodejs.org/en/download/).
-Run this followed commands:
+Find this site at https://stuartsportfolio.vercel.app/
 
-``` bash
-# Install dependencies (only the first time)
-npm install
-
-# Run the local server at localhost:8080
-npm run dev
-
-# Build for production in the dist/ directory
-npm run build
-```
+I made this site after taking Bruno Simon's Threejs Journey. All assets are my own including all the meshes I personally made in blender. The water shader makes use of Stefan Gustavson's Classic Perlin 2D Noise as well as other's helpful code on how to include fog over custom shaders.
