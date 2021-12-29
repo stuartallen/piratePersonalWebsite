@@ -5,13 +5,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { gsap } from 'gsap'
 
-/**
- * Base
- */
-// Debug
-const gui = new dat.GUI({
-    width: 400
-})
+//  Shaders
+import vertexShader from './shaders/oceanShaders/vertexShader.glsl'
+import fragmentShader from './shaders/oceanShaders/fragmentShader.glsl'
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -71,7 +67,6 @@ const cube = new THREE.Mesh(
 )
 
 scene.add(cube)
-
 
 /**
  * Materials
@@ -185,6 +180,8 @@ const setOnClickMethods = () => {
  * Scene
  */
 
+ scene.fog = new THREE.Fog(0x000000, 30, 50)
+
 //  Loading Overlay
 const overlayGeometry = new THREE.PlaneBufferGeometry(2,2,1,1)
 const overlayMaterial = new THREE.ShaderMaterial({
@@ -208,11 +205,19 @@ const overlayMaterial = new THREE.ShaderMaterial({
 const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
 scene.add(overlay)
 
-scene.background = nightSkyTexture
-
 const sea = new THREE.Mesh(
-    new THREE.CircleBufferGeometry(50, 50),
-    new THREE.MeshBasicMaterial({ color: 0x0000ff })
+    new THREE.PlaneBufferGeometry(200, 200, 200, 200),
+    new THREE.RawShaderMaterial({
+        fog: true,
+        uniforms: {
+            fogColor:    { type: "c", value: scene.fog.color },
+            fogNear:     { type: "f", value: scene.fog.near },
+            fogFar:      { type: "f", value: scene.fog.far },
+            time:        { type: "f", value: 0 }
+        },
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader
+    })
 )
 
 sea.rotation.set(-Math.PI / 2, 0, 0)
@@ -316,8 +321,6 @@ gltfLoader.load(
 	}
 )
 
-scene.fog = new THREE.Fog(0x000000, 40, 50)
-
 /**
  * Sizes
  */
@@ -348,6 +351,9 @@ window.addEventListener('resize', () =>
  */
 // Base camera
 const ogCameraPosition = new THREE.Vector3(0, 6, 15)
+if(window.innerWidth < window.innerHeight) {
+    ogCameraPosition.multiplyScalar(2)
+}
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(ogCameraPosition.x, ogCameraPosition.y, ogCameraPosition.z)
@@ -376,6 +382,9 @@ var elapsedTime = 0
 const tick = () =>
 {
     elapsedTime = clock.getElapsedTime()
+
+    //  Update water shader
+    sea.material.uniforms.time.value += elapsedTime
 
     //  Update camera if necessary
     if(cameraAnimationObject.transitioning) {
