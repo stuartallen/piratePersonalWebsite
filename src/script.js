@@ -1,7 +1,6 @@
 import './style.css'
 import * as dat from 'lil-gui'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 
@@ -90,13 +89,16 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
     }
 ]
 
+const initialFocus = new THREE.Vector3(-5, 3 , 0)
+
 const cameraAnimationObject = {
     startTime: -1,
     transitionTime: 2,
     lastPoint: new THREE.Vector3(0,0,0),
     currentPoint: new THREE.Vector3(0,0,0),
     transitioning: false,
-    t: 0
+    t: 0,
+    focus: initialFocus
 }
 
 const setOnClickMethods = () => {
@@ -156,19 +158,20 @@ const labelPointNames = [
 ]
 
 const globalOffset = {
-    'x': -7.5,
-    'y': -7.5,
-    'z': -7.5
+    'x': -15,
+    'y': -15,
+    'z': -15
 }
 
 let islandScene = []	//	Not defined outside of calls before this function
 gltfLoader.load(
 	'newMainScene.glb',
 	(gltf) => {
+        gltf.scene.position.set(gltf.scene.position.x + globalOffset.x,
+                                gltf.scene.position.y + globalOffset.y,
+                                gltf.scene.position.z + globalOffset.z)
 		gltf.scene.traverse((child) => {
-			child.position.set(child.position.x + globalOffset.x, 
-                child.position.y + globalOffset.y, 
-                child.position.z + globalOffset.z)
+            
 
             if(leafMaterialNames.includes(child.name)) {
                 child.material = leafMaterial
@@ -178,8 +181,6 @@ gltfLoader.load(
                 child.material = lightMaterial
             } else if(child.name == "Chest_Band") {
                 child.material = chestBandMaterial
-                console.log("band")
-                console.log(child.position)
             } else if(skullMaterialNames.includes(child.name)) {
                 child.material = skullMaterial
             } else if(child.name == "Flag") {
@@ -187,12 +188,12 @@ gltfLoader.load(
             } else {
 			    child.material = bakedMaterial
             }
-            
+
             //  HTML Points
             if(labelPointNames.includes(child.name)) {
                 points[labelPointNames.indexOf(child.name)].position = child.position
-                console.log("point")
-                console.log(child.position)
+                // console.log("point")
+                // console.log(child.position)
             }
 		})
 		scene.add(gltf.scene)
@@ -235,30 +236,14 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const ogCameraPosition = new THREE.Vector3(4, 2, 4)
+const ogCameraPosition = new THREE.Vector3(0, 6, 15)
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(ogCameraPosition.x, ogCameraPosition.y, ogCameraPosition.z)
-
-window.innerHeight > window.innerWidth ? 
-    camera.position.multiplyScalar(7) : 
-    camera.position.multiplyScalar(3)
+console.log(cameraAnimationObject.focus)
+camera.lookAt(cameraAnimationObject.focus)
 
 scene.add(camera)
-
-// Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
-controls.enableZoom = false
-controls.enablePan = false
-
-//  Horizontal Scroll
-controls.minAzimuthAngle = 0
-controls.maxAzimuthAngle = Math.PI / 2
-
-//  Vertical Scroll
-controls.minPolarAngle = Math.PI / 4
-controls.maxPolarAngle = Math.PI / 2 - 0.1
 
 /**
  * Renderer
@@ -275,10 +260,12 @@ renderer.outputEncoding = THREE.sRGBEncoding
  * Animate
  */
 const clock = new THREE.Clock()
+var elapsedTime = 0
 
 const tick = () =>
 {
-    const elapsedTime = clock.getElapsedTime()
+    const delta = clock.getElapsedTime() - elapsedTime
+    elapsedTime = clock.getElapsedTime()
 
     //  Update camera if necessary
     if(cameraAnimationObject.transitioning) {
@@ -286,19 +273,20 @@ const tick = () =>
         cameraAnimationObject.t = (elapsedTime - cameraAnimationObject.startTime) / cameraAnimationObject.transitionTime
         let newPos = new THREE.Vector3();
         if(cameraAnimationObject.t < 1) {
-            newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(1 - cameraAnimationObject.t), 
-                        ogCameraPosition.clone().multiplyScalar(cameraAnimationObject.t))
+            console.log(ogCameraPosition)
+            console.log(cameraAnimationObject.currentPoint)
+            console.log(cameraAnimationObject.t)
+            newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(cameraAnimationObject.t), 
+                        ogCameraPosition.clone().multiplyScalar(1 - cameraAnimationObject.t))
         } else {
             cameraAnimationObject.transitioning = false
             cameraAnimationObject.startTime = -1
-            newPos = ogCameraPosition
+            newPos = cameraAnimationObject.currentPoint
             cameraAnimationObject.lastPoint = ogCameraPosition
         }
         camera.position.set(newPos.x, newPos.y, newPos.z)
+        console.log(camera.position)
     }
-
-    // Update controls
-    controls.update()
 
     //  Update HTML points
     for(const point of points) {
