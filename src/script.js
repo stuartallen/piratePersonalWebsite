@@ -18,6 +18,8 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Scene
 const scene = new THREE.Scene()
+//  This must be defined up here so loading manager has access to it
+var points = []
 
 /**
  * Loaders
@@ -28,6 +30,9 @@ const loadingBar = document.querySelector('.loading-bar')
 const loadingManager = new THREE.LoadingManager(
     //  Loaded
     () => {
+        for(let point of points){
+            point.element.classList.add('visible')
+        }
         loadingBar.classList.add('finished')
         gsap.to(overlayMaterial.uniforms.uAlpha, {duration: 3, value: 0})
     },
@@ -87,7 +92,7 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
 /**
  * Labels/Points of interests
  */
- const points = [
+ points = [
     {
         position: new THREE.Vector3(0,0,0),
         element: document.querySelector(".treasurePoint"),
