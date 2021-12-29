@@ -108,8 +108,7 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
             " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
             "This is in addition to Web Development, Data Structures and Algorithms, Linear Algebra, Vector Calculus, and Statistics classes. </p>" + 
             "<p style='overflow:hidden;'>Stuart does not neglect his soft skills and has volunteered at and lead workshops for ChickTech, as well as performed the role of " + 
-            "Oregon States Taekwondo Club's event coordinator.</p>" +
-            "<ul><li>fuck</li></ul>"
+            "Oregon States Taekwondo Club's event coordinator.</p>"
         }
     },
     {
