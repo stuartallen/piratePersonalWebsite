@@ -96,8 +96,8 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
             document.getElementById('content').innerHTML = "<h1>Treasure</h1><p>Stuart has picked up many skills on his journeys! " + 
-            "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some known frameworks are Nodejs, Reactjs, " +
-            "MongoDB, Mongoosejs, and Threejs. Some relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
+            "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some other known technologies are Nodejs, Reactjs, " +
+            "MongoDB, Mongoosejs, and Threejs. His relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
             " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
             "This is in addition to Web Development, Data Structures and Algorithms, Linear Algebra, Vector Calculus, and Statistics classes. </p>" + 
             "<p>Stuart does not neglect his soft skills and has volunteered at and lead workshops for ChickTech, as well as performed the role of " + 
@@ -110,7 +110,7 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         focus: new THREE.Vector3(0,0,0),
         cameraPostition: new THREE.Vector3(0,0,0),
         setContent: () => {
-            document.getElementById('content').innerHTML = "<h1>Ahoy</h1><p>Feel free to reach out, follow, or view me on the following platforms!</p>" + 
+            document.getElementById('content').innerHTML = "<h1>Ahoy</h1><p>Feel free to reach out, follow, or view Stuart on the following platforms!</p>" + 
             "<ul><li><a href='https://www.linkedin.com/in/stuartallen020/' target='_blank'>LinkedIn</a></li>"+
             "<li><a href='https://github.com/stuartallen?tab=repositories' target='_blank'>GitHub</li>" +
             "<li><a href='https://honors.oregonstate.edu/user/28121/contact' target='_blank'>Email</li>" + 
