@@ -73,19 +73,27 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
  const points = [
     {
         position: new THREE.Vector3(0,0,0),
-        element: document.querySelector(".treasurePoint")
+        element: document.querySelector(".treasurePoint"),
+        focus: new THREE.Vector3(0,0,0),
+        cameraPostition: new THREE.Vector3(0,0,0)
     },
     {
         position: new THREE.Vector3(0,0,0),
-        element: document.querySelector(".skullPoint")
+        element: document.querySelector(".skullPoint"),
+        focus: new THREE.Vector3(0,0,0),
+        cameraPostition: new THREE.Vector3(0,0,0)
     },
     {
         position: new THREE.Vector3(0,0,0),
-        element: document.querySelector(".wheelPoint")
+        element: document.querySelector(".wheelPoint"),
+        focus: new THREE.Vector3(0,0,0),
+        cameraPostition: new THREE.Vector3(0,0,0)
     },
     {
         position: new THREE.Vector3(0,0,0),
-        element: document.querySelector(".flagPoint")
+        element: document.querySelector(".flagPoint"),
+        focus: new THREE.Vector3(0,0,0),
+        cameraPostition: new THREE.Vector3(0,0,0)
     }
 ]
 
@@ -106,15 +114,14 @@ const setOnClickMethods = () => {
         point.element.addEventListener("click", (e) => {
             console.log("clicked")
             cameraAnimationObject.lastPoint = ogCameraPosition
-            cameraAnimationObject.currentPoint = point.position
+            cameraAnimationObject.currentPoint = point.cameraPostition
             cameraAnimationObject.transitioning = true
             cameraAnimationObject.t = 0
+            cameraAnimationObject.focus = point.focus
             console.log("finished click function")
         })
     }
 }
-
-
 
 /**
  * Scene
@@ -157,6 +164,20 @@ const labelPointNames = [
     "flagIconEmpty"
 ]
 
+const focusPointNames = [
+    "Chest_Band",
+    "Skull_second_right",
+    "wheel",
+    "flag"
+]
+
+const cameraPointNames = [
+    "treasureCameraEmpty",
+    "skullCameraEmpty",
+    "wheelCameraEmpty",
+    "flagCameraEmpty"
+]
+
 const globalOffset = {
     'x': -15,
     'y': -15,
@@ -173,13 +194,6 @@ gltfLoader.load(
                                 gltf.scene.position.z + globalOffset.z)
         console.log(gltf.scene.position)
 		gltf.scene.traverse((child) => {
-            // child.position.set(
-            //     child.position.x + globalOffset.x,
-            //     child.position.y + globalOffset.y,
-            //     child.position.z + globalOffset.z
-            // )
-            
-
             if(leafMaterialNames.includes(child.name)) {
                 child.material = leafMaterial
             } else if(child.name == "Lava") {
@@ -188,25 +202,36 @@ gltfLoader.load(
                 child.material = lightMaterial
             } else if(child.name == "Chest_Band") {
                 child.material = chestBandMaterial
+                points[0].focus = child.position.clone().add(globalOffset)
             } else if(skullMaterialNames.includes(child.name)) {
                 child.material = skullMaterial
             } else if(child.name == "Flag") {
                 child.material = flagMaterial
+                points[3].focus = child.position.clone().add(globalOffset)
             } else {
 			    child.material = bakedMaterial
+            }
+
+            if(child.name == 'Skull_second_right') {
+                points[1].focus = child.position.clone().add(globalOffset)
+            } else if(child.name == 'wheel') {
+                points[2].focus = child.position.clone().add(globalOffset)
             }
 
             //  HTML Points
             if(labelPointNames.includes(child.name)) {
                 points[labelPointNames.indexOf(child.name)].position = child.position.clone().add(globalOffset)
             }
+            if(cameraPointNames.includes(child.name)) {
+                points[cameraPointNames.indexOf(child.name)].cameraPostition = child.position.clone().add(globalOffset)
+            }
 		})
 		scene.add(gltf.scene)
 		islandScene = scene.children[3].children
         setOnClickMethods()
-        // islandScene.forEach((child) => {
-        //     console.log(child.name)
-        // })
+        islandScene.forEach((child) => {
+            console.log(child.name)
+        })
 	}
 )
 
@@ -277,9 +302,6 @@ const tick = () =>
         cameraAnimationObject.t = (elapsedTime - cameraAnimationObject.startTime) / cameraAnimationObject.transitionTime
         let newPos = new THREE.Vector3();
         if(cameraAnimationObject.t < 1) {
-            console.log(ogCameraPosition)
-            console.log(cameraAnimationObject.currentPoint)
-            console.log(cameraAnimationObject.t)
             newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(cameraAnimationObject.t), 
                         ogCameraPosition.clone().multiplyScalar(1 - cameraAnimationObject.t))
         } else {
@@ -289,6 +311,7 @@ const tick = () =>
             cameraAnimationObject.lastPoint = ogCameraPosition
         }
         camera.position.set(newPos.x, newPos.y, newPos.z)
+        camera.lookAt(cameraAnimationObject.focus)
         console.log(camera.position)
     }
 
