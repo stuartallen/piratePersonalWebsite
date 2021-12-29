@@ -119,12 +119,16 @@ document.getElementById("backButton").addEventListener("click", (e) => {
     cameraAnimationObject.lastFocus = cameraAnimationObject.focus
     cameraAnimationObject.focus = initialFocus
     cameraAnimationObject.currentPoint = ogCameraPosition
+    for(let point of points) {
+        point.element.classList.add('visible')
+    }
+    document.getElementById("backButton").classList.remove("visible")
+    document.getElementById("content").classList.remove("visible")
 })
 
 const setOnClickMethods = () => {
     for(let point of points) {
         point.element.addEventListener("click", (e) => {
-            console.log("clicked")
             cameraAnimationObject.lastPoint = ogCameraPosition
             cameraAnimationObject.currentPoint = point.cameraPostition
             cameraAnimationObject.transitioning = true
@@ -132,7 +136,11 @@ const setOnClickMethods = () => {
             cameraAnimationObject.lastFocus = cameraAnimationObject.focus
             cameraAnimationObject.focus = point.focus
             cameraAnimationObject.zoomed = true
-            console.log("finished click function")
+            for(let point of points) {
+                point.element.classList.remove("visible")
+            }
+            document.getElementById("backButton").classList.add("visible")
+            document.getElementById("content").classList.add("visible")
         })
     }
 }
