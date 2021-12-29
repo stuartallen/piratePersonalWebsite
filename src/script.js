@@ -381,10 +381,11 @@ var elapsedTime = 0
 
 const tick = () =>
 {
+    const delta = clock.getElapsedTime() - elapsedTime
     elapsedTime = clock.getElapsedTime()
 
     //  Update water shader
-    sea.material.uniforms.time.value += elapsedTime
+    sea.material.uniforms.time.value += delta
 
     //  Update camera if necessary
     if(cameraAnimationObject.transitioning) {

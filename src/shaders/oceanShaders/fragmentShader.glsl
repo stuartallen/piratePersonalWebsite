@@ -4,7 +4,7 @@ uniform mediump vec3 fogColor;
 uniform mediump float fogNear;
 uniform mediump float fogFar;
 
-uniform mediump float time;
+uniform highp float time;
 
 //	Classic Perlin 2D Noise 
 //	by Stefan Gustavson
@@ -50,7 +50,7 @@ mediump float cnoise(vec2 P){
 }
 
 void main() {
-    mediump float strength = max(0.5, 1.0 - abs(cnoise((vUv + vec2(time / 100000.0)) * 50.0)));
+    mediump float strength = max(0.5, 1.0 - abs(cnoise((vUv + vec2(time / 1000.0)) * 50.0)));
     gl_FragColor = vec4(0.0, 0.0, strength, 1.0);
     mediump float depth = gl_FragCoord.z / gl_FragCoord.w;
     mediump float fogFactor = smoothstep( fogNear, fogFar, depth );
