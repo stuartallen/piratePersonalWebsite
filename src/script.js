@@ -95,7 +95,13 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         cameraPostition: new THREE.Vector3(0,0,0),
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
-            document.getElementById('content').innerHTML = '<h1>Treasure content</h1><p>Blah blah</p>'
+            document.getElementById('content').innerHTML = "<h1>Treasure</h1><p>Stuart has picked up many skills on his journeys! " + 
+            "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some known frameworks are Nodejs, Reactjs, " +
+            "MongoDB, Mongoosejs, and Threejs. Some relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
+            " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
+            "This is in addition to Web Development, Data Structures and Algorithms, Linear Algebra, Vector Calculus, and Statistics classes. </p>" + 
+            "<p>Stuart does not neglect his soft skills and has volunteered at and lead workshops for ChickTech, as well as performed the role of " + 
+            "Oregon States Taekwondo Club's event coordinator.</p>"
         }
     },
     {
@@ -104,7 +110,11 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         focus: new THREE.Vector3(0,0,0),
         cameraPostition: new THREE.Vector3(0,0,0),
         setContent: () => {
-            document.getElementById('content').innerHTML = '<h1>Ahoy content</h1><p>Blah blah</p>'
+            document.getElementById('content').innerHTML = "<h1>Ahoy</h1><p>Feel free to reach out, follow, or view me on the following platforms!</p>" + 
+            "<ul><li><a href='https://www.linkedin.com/in/stuartallen020/' target='_blank'>LinkedIn</a></li>"+
+            "<li><a href='https://github.com/stuartallen?tab=repositories' target='_blank'>GitHub</li>" +
+            "<li><a href='https://honors.oregonstate.edu/user/28121/contact' target='_blank'>Email</li>" + 
+            "<li><a href='https://docs.google.com/document/d/1OS4kPltfQfwnjBIWfxr8Ouh-z1Mi6Qq1EVojoAHzePY/edit?usp=sharing' target='_blank'>Resume</li></ul>"
         }
     },
     {
@@ -113,7 +123,8 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         focus: new THREE.Vector3(0,0,0),
         cameraPostition: new THREE.Vector3(0,0,0),
         setContent: () => {
-            document.getElementById('content').innerHTML = '<h1>Heading content</h1><p>Blah blah</p>'
+            document.getElementById('content').innerHTML = "<h1>Heading</h1><p>Stuart is actively looking for a software engineering or machine learning " + 
+            " internship for the summer of 2022!</p>"
         }
     },
     {
@@ -122,7 +133,12 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         focus: new THREE.Vector3(0,0,0),
         cameraPostition: new THREE.Vector3(0,0,0),
         setContent: () => {
-            document.getElementById('content').innerHTML = '<h1>Voyages content</h1><p>Blah blah</p>'
+            document.getElementById('content').innerHTML = "<h1>Voyages</h1><p>Stuart has worked in the following roles</p>" + 
+            "<ul><li>OSU Honors College Web Editor (September 2021 - Present)</li> " +
+            "<li>OSU Web Development Teaching Assistant (June 2021 - August 2021)</li>" + 
+            "<li>URSA Research Assistant Intern (February 2021 - June 2021)</li>" + 
+            "<li>Math Tutor at ScreenTime Tutoring (September 2020 - February 2021)</li>" + 
+            "<li>OSU Computer Science Tutor (March 2020 - December 2020)</li></ul>"
         }
     }
 ]
@@ -154,6 +170,7 @@ document.getElementById("backButton").addEventListener("click", (e) => {
     }
     document.getElementById("backButton").classList.remove("visible")
     document.getElementById("content").classList.remove("visible")
+    document.getElementById("title").classList.remove("hide")
 })
 
 const setOnClickMethods = () => {
@@ -170,6 +187,7 @@ const setOnClickMethods = () => {
             for(let point of points) {
                 point.element.classList.remove("visible")
             }
+            document.getElementById("title").classList.add("hide")
             document.getElementById("backButton").classList.add("visible")
             document.getElementById("content").classList.add("visible")
         })
@@ -350,9 +368,10 @@ window.addEventListener('resize', () =>
  * Camera
  */
 // Base camera
-const ogCameraPosition = new THREE.Vector3(0, 6, 15)
+const ogCameraPosition = new THREE.Vector3(-7.5, 9, 15)
 if(window.innerWidth < window.innerHeight) {
-    ogCameraPosition.multiplyScalar(2)
+    ogCameraPosition.set(0, 9, 15)
+    ogCameraPosition.multiplyScalar(2.2)
 }
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
