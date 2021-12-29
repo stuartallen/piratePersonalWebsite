@@ -19,6 +19,10 @@ body
     outline: none;
 }
 
+a {
+    color: white;
+}
+
 #title {
     position: absolute;
     top: 5%;

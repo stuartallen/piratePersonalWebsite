@@ -96,9 +96,12 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
             document.getElementById('content').innerHTML = "<h1>Plunder</h1><p>" +
-            "Some of Stuart's projects include" +
+            "Some of Stuart's projects include:" +
             "<ul><li>This website made with threejs</li>" + 
-            "<li>A Drum Machine Website Made in vanilla javascript</li></ul>" +
+            "<li>Completion of Bruno Simon's course Threejs Journey</li>" + 
+            "<li><a href='https://stootools.com/' target='_blank'>A drum machine website made in vanilla javascript</a></li>" + 
+            "<li><a href='https://github.com/stuartallen/qbert_remake' target='_blank'>A recreation of Qbert in C++ using SDL2</a></li>" + 
+            "<li><a></a></li></ul>" +
             "Stuart has picked up many skills on his journeys! " + 
             "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some other known technologies are Nodejs, Reactjs, " +
             "MongoDB, Mongoosejs, and Threejs. His relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
