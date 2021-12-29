@@ -106,7 +106,8 @@ const cameraAnimationObject = {
     currentPoint: new THREE.Vector3(0,0,0),
     transitioning: false,
     t: 0,
-    focus: initialFocus
+    focus: initialFocus,
+    lastFocus: initialFocus
 }
 
 const setOnClickMethods = () => {
@@ -301,17 +302,21 @@ const tick = () =>
         cameraAnimationObject.startTime = cameraAnimationObject.startTime == -1 ? elapsedTime : cameraAnimationObject.startTime
         cameraAnimationObject.t = (elapsedTime - cameraAnimationObject.startTime) / cameraAnimationObject.transitionTime
         let newPos = new THREE.Vector3();
+        let lookAtPos = new THREE.Vector3();
         if(cameraAnimationObject.t < 1) {
             newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(cameraAnimationObject.t), 
                         ogCameraPosition.clone().multiplyScalar(1 - cameraAnimationObject.t))
+            lookAtPos.addVectors(cameraAnimationObject.focus.clone().multiplyScalar(cameraAnimationObject.t), 
+                        cameraAnimationObject.lastFocus.clone().multiplyScalar(1 - cameraAnimationObject.t))
         } else {
             cameraAnimationObject.transitioning = false
             cameraAnimationObject.startTime = -1
             newPos = cameraAnimationObject.currentPoint
             cameraAnimationObject.lastPoint = ogCameraPosition
+            lookAtPos = cameraAnimationObject.focus
         }
         camera.position.set(newPos.x, newPos.y, newPos.z)
-        camera.lookAt(cameraAnimationObject.focus)
+        camera.lookAt(lookAtPos)
         console.log(camera.position)
     }
 
