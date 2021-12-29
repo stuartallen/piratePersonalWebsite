@@ -103,7 +103,7 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
             "<li><a href='https://github.com/stuartallen/qbert_remake' target='_blank'>A recreation of Qbert in C++ using SDL2</a></li>" + 
             "</ul>" +
             "<p>Stuart has picked up many skills on his journeys! " + 
-            "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some other known technologies are Nodejs, Reactjs, " +
+            "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some of his other known technologies are Nodejs, Reactjs, " +
             "MongoDB, Mongoosejs, and Threejs. His relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
             " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
             "This is in addition to Web Development, Data Structures and Algorithms, Linear Algebra, Vector Calculus, and Statistics classes. </p>" + 
