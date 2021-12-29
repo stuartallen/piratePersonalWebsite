@@ -107,8 +107,19 @@ const cameraAnimationObject = {
     transitioning: false,
     t: 0,
     focus: initialFocus,
-    lastFocus: initialFocus
+    lastFocus: initialFocus,
+    zoomed: false
 }
+
+document.getElementById("backButton").addEventListener("click", (e) => {
+    cameraAnimationObject.lastPoint = cameraAnimationObject.currentPoint
+    cameraAnimationObject.zoomed = false
+    cameraAnimationObject.transitioning = true
+    cameraAnimationObject.t = 0
+    cameraAnimationObject.lastFocus = cameraAnimationObject.focus
+    cameraAnimationObject.focus = initialFocus
+    cameraAnimationObject.currentPoint = ogCameraPosition
+})
 
 const setOnClickMethods = () => {
     for(let point of points) {
@@ -118,7 +129,9 @@ const setOnClickMethods = () => {
             cameraAnimationObject.currentPoint = point.cameraPostition
             cameraAnimationObject.transitioning = true
             cameraAnimationObject.t = 0
+            cameraAnimationObject.lastFocus = cameraAnimationObject.focus
             cameraAnimationObject.focus = point.focus
+            cameraAnimationObject.zoomed = true
             console.log("finished click function")
         })
     }
@@ -230,9 +243,9 @@ gltfLoader.load(
 		scene.add(gltf.scene)
 		islandScene = scene.children[3].children
         setOnClickMethods()
-        islandScene.forEach((child) => {
-            console.log(child.name)
-        })
+        // islandScene.forEach((child) => {
+        //     console.log(child.name)
+        // })
 	}
 )
 
@@ -305,7 +318,7 @@ const tick = () =>
         let lookAtPos = new THREE.Vector3();
         if(cameraAnimationObject.t < 1) {
             newPos.addVectors(cameraAnimationObject.currentPoint.clone().multiplyScalar(cameraAnimationObject.t), 
-                        ogCameraPosition.clone().multiplyScalar(1 - cameraAnimationObject.t))
+                        cameraAnimationObject.lastPoint.clone().multiplyScalar(1 - cameraAnimationObject.t))
             lookAtPos.addVectors(cameraAnimationObject.focus.clone().multiplyScalar(cameraAnimationObject.t), 
                         cameraAnimationObject.lastFocus.clone().multiplyScalar(1 - cameraAnimationObject.t))
         } else {
