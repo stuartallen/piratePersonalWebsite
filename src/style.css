@@ -8,7 +8,13 @@
 html,
 body
 {
+    height: 100%;
+    margin: 0;
     overflow: hidden;
+}
+
+body{
+    height: 100%;
 }
 
 .webgl
@@ -19,8 +25,32 @@ body
     outline: none;
 }
 
+.wrapper {
+    position: absolute;
+    top: 0.5px;
+    left: 0;
+    right: 0;
+    bottom: 0.5px;
+    overflow-x: hidden; /* or any other value */
+    overflow-y: hidden; /* or any other value */
+}
+
 a {
     color: white;
+}
+
+p {
+    height: fit-content;
+}
+
+ul {
+    padding-left: 5%;
+    padding-bottom: 3%;
+    height: fit-content;
+}
+
+p {
+    padding-bottom: 3%;
 }
 
 #title {
@@ -106,7 +136,8 @@ a {
 
 #content {
     left: 2%;
-    right: 2%;
+    width: fit-content;
+    max-width: 93%;
     bottom: 2%;
     height: fit-content;
     max-height: 40%;
@@ -116,6 +147,8 @@ a {
     background-color: black;
     padding-left: 2%;
 }
+
+*::-webkit-overflow
 
 *::-webkit-scrollbar {
     padding: 4%;

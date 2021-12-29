@@ -96,19 +96,20 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
             document.getElementById('content').innerHTML = "<h1>Plunder</h1><p>" +
-            "Some of Stuart's projects include:" +
+            "Some of Stuart's projects include:</p>" +
             "<ul><li>This website made with threejs</li>" + 
             "<li>Completion of Bruno Simon's course Threejs Journey</li>" + 
             "<li><a href='https://stootools.com/' target='_blank'>A drum machine website made in vanilla javascript</a></li>" + 
             "<li><a href='https://github.com/stuartallen/qbert_remake' target='_blank'>A recreation of Qbert in C++ using SDL2</a></li>" + 
-            "<li><a></a></li></ul>" +
-            "Stuart has picked up many skills on his journeys! " + 
+            "</ul>" +
+            "<p>Stuart has picked up many skills on his journeys! " + 
             "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some other known technologies are Nodejs, Reactjs, " +
             "MongoDB, Mongoosejs, and Threejs. His relevant coursework includes Oregon State's Introduction to Artificial Intelligence and " + 
             " Machine Learning and Data Mining courses that delve into game theory as well as supervised and unsupervised probabilistic models. " + 
             "This is in addition to Web Development, Data Structures and Algorithms, Linear Algebra, Vector Calculus, and Statistics classes. </p>" + 
-            "<p>Stuart does not neglect his soft skills and has volunteered at and lead workshops for ChickTech, as well as performed the role of " + 
-            "Oregon States Taekwondo Club's event coordinator.</p>"
+            "<p style='overflow:hidden;'>Stuart does not neglect his soft skills and has volunteered at and lead workshops for ChickTech, as well as performed the role of " + 
+            "Oregon States Taekwondo Club's event coordinator.</p>" +
+            "<ul><li>fuck</li></ul>"
         }
     },
     {
@@ -374,6 +375,7 @@ const ogCameraPosition = new THREE.Vector3(-7.5, 9, 15)
 if(window.innerWidth < window.innerHeight) {
     ogCameraPosition.set(0, 9, 15)
     ogCameraPosition.multiplyScalar(2.2)
+    scene.fog.near = 40
 }
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
