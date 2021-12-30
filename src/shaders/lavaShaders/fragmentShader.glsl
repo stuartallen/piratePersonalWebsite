@@ -50,8 +50,8 @@ mediump float cnoise(vec2 P){
 }
 
 void main() {
-    mediump float strength = max(0.5, 1.0 - abs(cnoise((vUv + vec2(time / 1000.0)) * 20.0))) / 1.5;
-    gl_FragColor = vec4(0.05, 0.1, strength, 1.0);
+    mediump float strength = min(0.9, max(0.5, 1.0 - abs(cnoise((vUv + vec2(time / 3.0))))));
+    gl_FragColor = vec4(strength, 0.0, 0.0, 1.0);
     mediump float depth = gl_FragCoord.z / gl_FragCoord.w;
     mediump float fogFactor = smoothstep( fogNear, fogFar, depth );
     gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );

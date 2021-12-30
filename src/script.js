@@ -6,8 +6,11 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { gsap } from 'gsap'
 
 //  Shaders
-import vertexShader from './shaders/oceanShaders/vertexShader.glsl'
-import fragmentShader from './shaders/oceanShaders/fragmentShader.glsl'
+import oceanVertexShader from './shaders/oceanShaders/vertexShader.glsl'
+import oceanFragmentShader from './shaders/oceanShaders/fragmentShader.glsl'
+
+import lavaVertexShader from './shaders/lavaShaders/vertexShader.glsl'
+import lavaFragmentShader from './shaders/lavaShaders/fragmentShader.glsl'
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -57,31 +60,55 @@ const bakedTexture = textureLoader.load('baked2.jpg')
 bakedTexture.flipY = false
 bakedTexture.encoding = THREE.sRGBEncoding
 
-/**
- * Object
- */
-const cube = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial()
-)
+//  Stars
 
-scene.add(cube)
+function addStar() {
+    const geometry = new THREE.SphereBufferGeometry(0.1)
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff })
+    const star = new THREE.Mesh(geometry, material)
+
+    //const [x, y, z] = Array(3).fill().map(() => - THREE.MathUtils.randFloat(0, 20))
+    const x = THREE.MathUtils.randFloatSpread(100)
+    const y = THREE.MathUtils.randFloat(5, 20)
+    const z = -30
+
+    star.position.set(x, y, z)
+    scene.add(star)
+}
+
+for(let i = 0; i < 200; i++) {
+    addStar()
+}
 
 /**
  * Materials
  */
+
+//  Some materials use the fog
+scene.fog = new THREE.Fog(0x000000, 30, 50)
+
 //	Baked materials
 const bakedMaterial = new THREE.MeshBasicMaterial({ map: bakedTexture})
 
 //  Three materials
 
 //  TODO: Find the correct colors
-const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-const lavaMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 })
+const lavaMaterial = new THREE.RawShaderMaterial({
+    fog: true,
+    uniforms: {
+        fogColor:    { type: "c", value: scene.fog.color },
+        fogNear:     { type: "f", value: scene.fog.near },
+        fogFar:      { type: "f", value: scene.fog.far },
+        time:        { type: "f", value: 0 }
+    },
+    vertexShader: lavaVertexShader,
+    fragmentShader: lavaFragmentShader
+})
 const lightMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00})
 const chestBandMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 })
 const flagMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide })
-const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
+const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xFBFA9A })
+const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x45FB24 })
 
 /**
  * Labels/Points of interests
@@ -94,7 +121,7 @@ const skullMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff })
         cameraPostition: new THREE.Vector3(0,0,0),
         //  Yes I actually do want to use innerHTML here, the user cant enter anything
         setContent: () => {
-            document.getElementById('content').innerHTML = "<h1>Plunder</h1><p>" +
+            document.getElementById('content').innerHTML = "<h1>Treasure</h1><p>" +
             "Some of Stuart's projects include:</p>" +
             "<ul><li>This website made with threejs</li>" + 
             "<li>Completion of Bruno Simon's course Threejs Journey</li>" + 
@@ -199,8 +226,6 @@ const setOnClickMethods = () => {
  * Scene
  */
 
- scene.fog = new THREE.Fog(0x000000, 30, 50)
-
 //  Loading Overlay
 const overlayGeometry = new THREE.PlaneBufferGeometry(2,2,1,1)
 const overlayMaterial = new THREE.ShaderMaterial({
@@ -234,8 +259,8 @@ const sea = new THREE.Mesh(
             fogFar:      { type: "f", value: scene.fog.far },
             time:        { type: "f", value: 0 }
         },
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader
+        vertexShader: oceanVertexShader,
+        fragmentShader: oceanFragmentShader
     })
 )
 
@@ -373,7 +398,8 @@ const ogCameraPosition = new THREE.Vector3(-7.5, 9, 15)
 if(window.innerWidth < window.innerHeight) {
     ogCameraPosition.set(0, 9, 15)
     ogCameraPosition.multiplyScalar(2.2)
-    scene.fog.near = 40
+    scene.fog.near = 70
+    scene.fog.far = 100
 }
 
 const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 100)
@@ -407,6 +433,7 @@ const tick = () =>
 
     //  Update water shader
     sea.material.uniforms.time.value += delta
+    lavaMaterial.uniforms.time.value += delta
 
     //  Update camera if necessary
     if(cameraAnimationObject.transitioning) {
