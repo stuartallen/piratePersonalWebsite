@@ -93,6 +93,8 @@ p {
     transition: transform 0.3s;
     opacity: 0.6;
     transition: opacity 0.3s;
+
+    border: 2px solid white;
 }
 
 .point.visible .label {
@@ -131,7 +133,8 @@ p {
 #backButton {
     left: 2%;
     top: 2%;
-    cursor: pointer;
+    cursor: pointer;    
+    border: 2px solid white;
 }
 
 #content {
