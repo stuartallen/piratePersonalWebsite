@@ -127,6 +127,7 @@ const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x45FB24 })
             "<li>Completion of Bruno Simon's course Threejs Journey</li>" + 
             "<li><a href='https://stootools.com/' target='_blank'>A drum machine website made in vanilla javascript</a></li>" + 
             "<li><a href='https://github.com/stuartallen/qbert_remake' target='_blank'>A recreation of Qbert in C++ using SDL2</a></li>" + 
+            "<li><a href='https://github.com/stuartallen/MASM-Portfolio-Project' target='_blank'>Procedures and Macros to convert a string to an integer and back in MASM</a></li>" +
             "</ul>" +
             "<p>Stuart has picked up many skills on his journeys! " + 
             "His languages known include Javascript, HTML, CSS, SASS, Python, C/C++, and mySQL. Some of his other known technologies are Nodejs, Reactjs, " +
