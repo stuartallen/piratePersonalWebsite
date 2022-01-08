@@ -9,14 +9,14 @@ uniform highp float time;
 //	Classic Perlin 2D Noise 
 //	by Stefan Gustavson
 //
-mediump vec4 permute(vec4 x)
+mediump vec4 permute(mediump vec4 x)
 {
     return mod(((x*34.0)+1.0)*x, 289.0);
 }
 
-mediump vec2 fade(vec2 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+mediump vec2 fade(mediump vec2 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
 
-mediump float cnoise(vec2 P){
+mediump float cnoise(mediump vec2 P){
   mediump vec4 Pi = floor(P.xyxy) + vec4(0.0, 0.0, 1.0, 1.0);
   mediump vec4 Pf = fract(P.xyxy) - vec4(0.0, 0.0, 1.0, 1.0);
   Pi = mod(Pi, 289.0); // To avoid truncation effects in permutation
