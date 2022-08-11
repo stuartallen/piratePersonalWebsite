@@ -150,20 +150,21 @@ p {
     padding-left: 2%;
 }
 
-*::-webkit-overflow
+/* *::-webkit-overflow */
 
 *::-webkit-scrollbar {
-    padding: 4%;
+    /* padding: 4%;  */
+    display: none;
 }
 
-*::-webkit-scrollbar-corner {
+/* *::-webkit-scrollbar-corner {
     background-color: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
     background-color: #ffffffee;
     border-radius: 3px;
-}
+} */
 
 .loading-bar {
     position: absolute;
