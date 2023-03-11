@@ -168,7 +168,7 @@ const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x45FB24 })
         cameraPostition: new THREE.Vector3(0,0,0),
         setContent: () => {
             document.getElementById('content').innerHTML = "<h1>Voyages</h1><p>Stuart has worked in the following roles</p>" + 
-            "<ul><li>Software Engineering Intern (June 2022 - August 2022)</li>" + 
+            "<ul><li>Software Engineering Intern at Cvent (June 2022 - August 2022)</li>" + 
             "<li>OSU Honors College Web Editor (September 2021 - Present)</li> " +
             "<li>OSU Web Development Teaching Assistant (June 2021 - August 2021)</li>" + 
             "<li>URSA Research Assistant Intern (February 2021 - June 2021)</li>" + 
