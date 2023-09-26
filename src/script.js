@@ -123,7 +123,10 @@ const leafMaterial = new THREE.MeshBasicMaterial({ color: 0x45FB24 })
         setContent: () => {
             document.getElementById('content').innerHTML = "<h1>Treasure</h1><p>" +
             "Some of Stuart's projects include:</p>" +
-            "<ul><li>This website made with threejs</li>" + 
+            "<ul>"+
+            "<li><a href='https://gmmthesissite.netlify.app/' target='_blank'>An Introduction to Gaussian Mixture Models</a>, a website that educates students about gaussian mixture models through interactive visualization</li>"+
+            "<li><a href='https://events.engineering.oregonstate.edu/expo2023/project/anomaly-detection-construction-use-case' target='_blank'>Anomaly Detection for Construction Use Case</a>, a capstone project Stuart led under the guidance of Intel employees that leverages Yolov5 and image augmentation techniques to detect welding defects in real time</li>" +
+            "<li>This website made with threejs</li>" + 
             "<li>Completion of Bruno Simon's course Threejs Journey</li>" + 
             "<li><a href='https://stootools.com/' target='_blank'>A drum machine website made in vanilla javascript</a></li>" + 
             "<li><a href='https://github.com/stuartallen/qbert_remake' target='_blank'>A recreation of Qbert in C++ using SDL2</a></li>" + 
